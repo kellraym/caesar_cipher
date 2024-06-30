@@ -1,11 +1,2 @@
-C: C
-R: -1
-B: C: z
-R: -1
-y
-C: R
-R: -1
-Q: 1
-C: a
-R: -1
-`
+This is a TEST of the Caesar Cipher.
+With a second line too!

@@ -37,12 +37,11 @@ bool get_is_encrypt(char *arg)
 
 int rotate(char c, int r, int bottom)
 {
-    printf("C: %c\nR: %d\n", c, r);
-    return ((c - bottom + r) % 26) + bottom;
+    return (c - bottom + r) % 26 + bottom;
 }
 
 // rotates input int c by r or returns non-alpha c
-int encrypt(char c, int r, bool is_encrypt)
+int encrypt(char c, int r)
 {
     if (c >= UPPER_BOTTOM && c <= UPPER_TOP)
     {
@@ -77,13 +76,13 @@ int main(int argc, char **argv)
         }
         else
         {
-            r = str_to_int(argv[i]);
+            r = str_to_int(argv[i]) % 26;
         }
     }
-    r *= is_encrypt ? 1 : -1;
+    r *= is_encrypt ? r : 26 - r; // inverse of rotation amount if decrypting
     while((c = getchar()) != EOF)
     {
-        putchar(encrypt(c, r, is_encrypt));
+        putchar(encrypt(c, r));
     }  
     return EXIT_SUCCESS;
 }
