@@ -53,9 +53,8 @@ int encrypt(char c, int r)
 
 int main(int argc, char **argv)
 {   
-    // TODO: set up convention to decrypt
-    // TODO: make it work with negative args
     // TODO: Interface asks user for rotation amount, input/output filenames
+    // TODO: make it work with negative args
     if (argc < 2)
     {
         printf("Missing arguments");
