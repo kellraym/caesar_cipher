@@ -2,22 +2,47 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define UPPER_BOTTOM 65
 #define UPPER_TOP 90
 #define LOWER_BOTTOM 97
 #define LOWER_TOP 122
 
-// TODO rotate chars
-// output encrypted/decrypted message
-
-int rotate(int c, int r, int bottom)
+int str_to_int(char *arg)
 {
-    return (c - bottom + r) % 26 + bottom;
+    int result = 0;
+    int factor = 1; 
+    for (int i = strlen(arg) - 1; i >= 0; i--)
+    {   
+        if (arg[i] < '0' || arg[i] > '9')
+        {
+            printf("Invalid rotation amount!");
+            exit(EXIT_FAILURE);
+        }
+        result += (arg[i] - '0') * factor;
+        factor *= 10;
+    }
+    return result;
+}
+
+bool get_is_encrypt(char *arg)
+{
+    if (arg[1] == 'd')
+    {
+        return false;
+    }
+    return true;
+}
+
+int rotate(char c, int r, int bottom)
+{
+    printf("C: %c\nR: %d\n", c, r);
+    return ((c - bottom + r) % 26) + bottom;
 }
 
 // rotates input int c by r or returns non-alpha c
-int encrypt(int c, int r)
+int encrypt(char c, int r, bool is_encrypt)
 {
     if (c >= UPPER_BOTTOM && c <= UPPER_TOP)
     {
@@ -32,17 +57,33 @@ int encrypt(int c, int r)
 }
 
 int main(int argc, char **argv)
-{
+{   
+    // TODO: set up convention to decrypt
+    // TODO: make it work with negative args
+    // TODO: Interface asks user for rotation amount, input/output filenames
     if (argc < 2)
     {
-        printf("Missing arguments!");
-        exit(1);
+        printf("Missing arguments");
+        exit(EXIT_FAILURE);
     }
-
-    int ch;
-    for (int i = 0; i < strlen(argv[1]); ++i)
+    char c;
+    int r = 0;
+    bool is_encrypt = true;
+    for (int i = 1; i < argc; i++)
     {
-        putchar(encrypt(argv[1][i], 3));
+        if (argv[i][0] == '-')
+        {
+            is_encrypt = get_is_encrypt(argv[i]);
+        }
+        else
+        {
+            r = str_to_int(argv[i]);
+        }
     }
+    r *= is_encrypt ? 1 : -1;
+    while((c = getchar()) != EOF)
+    {
+        putchar(encrypt(c, r, is_encrypt));
+    }  
     return EXIT_SUCCESS;
 }
