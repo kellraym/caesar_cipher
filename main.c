@@ -28,11 +28,7 @@ int str_to_int(char *arg)
 
 bool get_is_encrypt(char *arg)
 {
-    if (arg[1] == 'd')
-    {
-        return false;
-    }
-    return true;
+    return !(arg[1] == 'd');
 }
 
 int rotate(char c, int r, int bottom)
